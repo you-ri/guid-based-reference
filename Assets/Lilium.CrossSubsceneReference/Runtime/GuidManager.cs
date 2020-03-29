@@ -62,6 +62,18 @@ public class GuidManager
 
         Instance.InternalRemove(guid);
     }
+
+    public static GameObject Resolve (GuidReference guidReference)
+    {
+        if (Instance == null) {
+            Instance = new GuidManager ();
+        }
+        if (guidReference == null) return null;
+
+        return Instance.ResolveGuidInternal (guidReference.guid, null, null);
+    }
+
+
     public static GameObject ResolveGuid(System.Guid guid, Action<GameObject> onAddCallback, Action onRemoveCallback)
     {
         if (Instance == null)

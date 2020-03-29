@@ -8,11 +8,16 @@ using UnityEditor.SceneManagement;
 using UnityEditor.Experimental.SceneManagement;
 #endif
 
+using Unity.Entities;
+
+
+
+
 // This component gives a GameObject a stable, non-replicatable Globally Unique IDentifier.
 // It can be used to reference a specific instance of an object no matter where it is.
 // This can also be used for other systems, such as Save/Load game
 [ExecuteInEditMode, DisallowMultipleComponent]
-public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
+public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver, IConvertGameObjectToEntity
 {
     // System guid we use for comparison and generation
     System.Guid guid = System.Guid.Empty;
@@ -173,5 +178,11 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
     public void OnDestroy()
     {
         GuidManager.Remove(guid);
+    }
+
+
+    public void Convert (Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+    {
+        dstManager.AddComponentData (entity, new GuidComponentData { Value = guid });
     }
 }

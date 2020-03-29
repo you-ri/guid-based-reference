@@ -20,8 +20,18 @@ public class GuidReference : ISerializationCallbackReceiver
     
     // store our GUID in a form that Unity can save
     [SerializeField]
-    private byte[] serializedGuid;
-    private System.Guid guid;
+    public byte[] serializedGuid;
+    public System.Guid guid {
+        get {
+            if (_guid == default (Guid)) {
+                _guid = new Guid (serializedGuid);
+            }
+            return _guid;
+        }
+        private set { _guid = value; }
+    }
+    private System.Guid _guid;
+
 
 #if UNITY_EDITOR
     // decorate with some extra info in Editor so we can inform a user of what that GUID means
@@ -62,7 +72,7 @@ public class GuidReference : ISerializationCallbackReceiver
 
     public GuidReference(GuidComponent target)
     {
-        guid = target.GetGuid();
+        _guid = target.GetGuid();
     }
 
     private void GuidAdded(GameObject go)
@@ -81,7 +91,7 @@ public class GuidReference : ISerializationCallbackReceiver
     //convert system guid to a format unity likes to work with
     public void OnBeforeSerialize()
     {
-        serializedGuid = guid.ToByteArray();
+        serializedGuid = _guid.ToByteArray();
     }
 
     // convert from byte array to system guid and reset state
@@ -93,7 +103,7 @@ public class GuidReference : ISerializationCallbackReceiver
         {
             serializedGuid = new byte[16];
         }
-        guid = new System.Guid(serializedGuid);
+        _guid = new System.Guid(serializedGuid);
         addDelegate = GuidAdded;
         removeDelegate = GuidRemoved;
 

@@ -1,0 +1,17 @@
+{
+    "name": "Lilium.CrossSubsceneReference.Editor",
+    "references": [
+        "GUID:b0b46679801a83b40a2de11749db7d96"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
